@@ -1,15 +1,19 @@
-import {Request, Response} from 'express'
-import {AuthUserService} from '../services/AuthUserService'
+import { Request, Response } from "express";
+import { AuthUserService } from "../services/AuthUserService";
 
-class AuthUserController{
-    async handle(request: Request, response: Response){
-        const { code } = request.body
+class AuthUserController {
+  async handle(request: Request, response: Response) {
+      const { code } = request.body;
+      const service = new AuthUserService();
 
-        const service = new AuthUserService()
-        const result = await service.execute(code)
-
-        response.json(result)
+    try {
+      const result = await service.execute(code);
+      response.json(result);
+    } catch (error) {
+        return response.json(error.message)
     }
+
+  }
 }
 
-export {AuthUserController}
+export { AuthUserController };
